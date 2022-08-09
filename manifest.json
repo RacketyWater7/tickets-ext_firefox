@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "Ship Tickets Extension",
+  "version": "0.9.3",
+  "description": "Filling forms",
+  "icons": {
+    "48": "icons/48.png"
+  },
+  "background": {
+    "scripts": ["/js/background.js"]
+  },
+  "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab",
+    "scripting",
+    "declarativeContent",
+    "notifications"
+  ],
+  "browser_action": {
+    "default_icon": "icons/32.png",
+    "default_title": "Tickets Details",
+    "default_popup": "html/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["/js/content-script.js"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "daviddyson@rocketmail.com"
+    }
+  }
+}
