@@ -1,47 +1,8 @@
-// /**
-//  *
-//  * @param {number} ms
-//  * @returns promise
-//  */
-// function sleep(ms) {
-//   return new Promise((resolve) => setTimeout(resolve, ms));
-// }
-
-// let baseUrl = "";
-// let bearerToken = "";
-
-// window.onload = function () {
-//   init();
-// };
 function startup() {
   init();
 }
 window.addEventListener("pageshow", startup);
 
-/**
- * Fetch API Key from chrome storage
- */
-// function fetchApiKey() {
-//   chrome.storage.sync.get(["baseUrl", "bearerToken"], function (result) {
-//     try {
-//       if (result.baseUrl) {
-//         baseUrl = result.baseUrl.replace(/\/$/, "");
-//         bearerToken = result.bearerToken;
-//         init();
-//       } else {
-//         vNotify.error({ text: "Set API Url" });
-//       }
-//     } catch (err) {
-//       let desc = `${err.toString()} in fetchApiKey() in Content Script`;
-//       console.log(desc);
-//     }
-//   });
-// }
-// Main Function
-/**
- * check for the pathname and follow up functions execution
- */
-// https://secure.vermont.gov/DPS/criminalrecords/subscriber/request.php
 function init() {
   try {
     let { pathname } = window.location;
@@ -74,6 +35,14 @@ function init() {
             populatePassengerDetails(data, table);
           }
         });
+
+        break;
+      }
+      case "/shipping/pg_request.aspx": {
+        let paymentBtn = document.getElementById("btPayment");
+        if (paymentBtn) {
+          paymentBtn.click();
+        }
 
         break;
       }
@@ -124,7 +93,6 @@ const populateTicketDetails = (data) => {
     "ContentPlaceHolder1_shipclas_DropDownList"
   );
   if (classs) {
-    console.log("here");
     classs.value = data.class;
     classs.dispatchEvent(new Event("change"));
   }
@@ -151,11 +119,29 @@ const populateTicketDetails = (data) => {
       mobile.value = data.mobile;
     }
   }
+  setTimeout(() => {
+    let no = document.getElementById(
+      "ContentPlaceHolder1_shipwaiting_RadioButtonList_1"
+    );
+    let yes = document.getElementById(
+      "ContentPlaceHolder1_shipwaiting_RadioButtonList_0"
+    );
+    if (no) {
+      no.checked = false;
+    }
+    if (yes) {
+      yes.checked = true;
+    }
+  }, 1400);
+
   let NextBtn = document.getElementById(
     "ContentPlaceHolder1_shiptsubmit_Button"
   );
   if (NextBtn) {
-    NextBtn.click();
+    setTimeout(() => {
+      NextBtn.click();
+      NextBtn.dispatchEvent(new Event("click"));
+    }, 1600);
   }
 };
 /**
@@ -215,6 +201,10 @@ const populatePassengerDetails = (data, table) => {
         category.children[0].value = "I?1";
       }
       category.children[0].dispatchEvent(new Event("change"));
+    }
+    let nextBtn = document.getElementById("shiptissue_Button");
+    if (nextBtn) {
+      nextBtn.click();
     }
   }
 };

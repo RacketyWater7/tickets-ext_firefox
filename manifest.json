@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Ship Tickets Extension",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Filling forms",
   "icons": {
     "48": "icons/48.png"
